@@ -1,5 +1,7 @@
 # vuetufy-demo
 
+学习vuetify做的一个demo
+
 ## Project setup
 ```
 npm install
