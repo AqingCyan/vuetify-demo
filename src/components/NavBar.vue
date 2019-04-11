@@ -1,144 +1,77 @@
 <template>
-  <v-container>
-    <v-layout
-      text-xs-center
-      wrap
-    >
-      <v-flex xs12>
-        <v-img
-          :src="require('../assets/logo.svg')"
-          class="my-3"
-          contain
-          height="200"
-        ></v-img>
-      </v-flex>
+  <nav>
+    <v-toolbar flat app>
+      <v-toolbar-side-icon class="grey--text" @click="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-title class="text-uppercase grey--text">
+        <span class="font-weight-light">Todo</span>
+        <span>Aqing</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
 
-      <v-flex mb-4>
-        <h1 class="display-2 font-weight-bold mb-3">
-          Welcome to Vuetify
-        </h1>
-        <p class="subheading font-weight-regular">
-          For help and collaboration with other Vuetify developers,
-          <br>please join our online
-          <a href="https://community.vuetifyjs.com" target="_blank">Discord Community</a>
-        </p>
-      </v-flex>
+      <!-- dropdown menu -->
+      <v-menu offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn flat v-on="on" color="grey">
+            <v-icon>expand_more</v-icon>
+            <span>Menu</span>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-tile v-for="link in links" :key="link.text" router :to="link.route">
+            <v-list-tile-title>{{ link.text }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
 
-      <v-flex
-        mb-5
-        xs12
-      >
-        <h2 class="headline font-weight-bold mb-3">What's next?</h2>
+      <v-btn flat color="grey">
+        <span>Sign Out</span>
+        <v-icon right>exit_to_app</v-icon>
+      </v-btn>
+    </v-toolbar>
 
-        <v-layout justify-center>
-          <a
-            v-for="(next, i) in whatsNext"
-            :key="i"
-            :href="next.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ next.text }}
-          </a>
-        </v-layout>
-      </v-flex>
-
-      <v-flex
-        xs12
-        mb-5
-      >
-        <h2 class="headline font-weight-bold mb-3">Important Links</h2>
-
-        <v-layout justify-center>
-          <a
-            v-for="(link, i) in importantLinks"
-            :key="i"
-            :href="link.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ link.text }}
-          </a>
-        </v-layout>
-      </v-flex>
-
-      <v-flex
-        xs12
-        mb-5
-      >
-        <h2 class="headline font-weight-bold mb-3">Ecosystem</h2>
-
-        <v-layout justify-center>
-          <a
-            v-for="(eco, i) in ecosystem"
-            :key="i"
-            :href="eco.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ eco.text }}
-          </a>
-        </v-layout>
-      </v-flex>
-    </v-layout>
-  </v-container>
+    <v-navigation-drawer v-model="drawer" app class="primary">
+      <v-layout column align-center>
+        <v-flex class="mt-5">
+          <v-avatar size="100">
+            <img :src="avatar" alt="myavatar">
+          </v-avatar>
+          <p class="white--text subheading mt-1">AqingCyan</p>
+        </v-flex>
+        <v-flex class="mt-4">
+          <Popup></Popup>
+        </v-flex>
+      </v-layout>
+      <v-list>
+        <v-list-tile v-for="link in links" :key="link.text" router :to="link.route">
+          <v-list-tile-action>
+            <v-icon class="white--text">{{link.icon}}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="white--text">{{link.text}}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+  </nav>
 </template>
 
 <script>
+import Popup from './Popup'
   export default {
-    data: () => ({
-      ecosystem: [
-        {
-          text: 'vuetify-loader',
-          href: 'https://github.com/vuetifyjs/vuetify-loader'
-        },
-        {
-          text: 'github',
-          href: 'https://github.com/vuetifyjs/vuetify'
-        },
-        {
-          text: 'awesome-vuetify',
-          href: 'https://github.com/vuetifyjs/awesome-vuetify'
-        }
-      ],
-      importantLinks: [
-        {
-          text: 'Documentation',
-          href: 'https://vuetifyjs.com'
-        },
-        {
-          text: 'Chat',
-          href: 'https://community.vuetifyjs.com'
-        },
-        {
-          text: 'Made with Vuetify',
-          href: 'https://madewithvuetifyjs.com'
-        },
-        {
-          text: 'Twitter',
-          href: 'https://twitter.com/vuetifyjs'
-        },
-        {
-          text: 'Articles',
-          href: 'https://medium.com/vuetify'
-        }
-      ],
-      whatsNext: [
-        {
-          text: 'Explore components',
-          href: 'https://vuetifyjs.com/components/api-explorer'
-        },
-        {
-          text: 'Select a layout',
-          href: 'https://vuetifyjs.com/layout/pre-defined'
-        },
-        {
-          text: 'Frequently Asked Questions',
-          href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions'
-        }
-
-      ]
-    })
+    data() {
+      return {
+        avatar: 'https://img2.woyaogexing.com/2019/04/11/1434ade0198c4cb89d90eafd618c8301!400x400.jpeg',
+        drawer: false,
+        links: [
+          {icon: 'dashboard', text: 'Dashboard', route: '/'},
+          {icon: 'folder', text: 'My Projects', route: '/projects'},
+          {icon: 'person', text: 'Team', route: '/team'},
+        ]
+      }
+    },
+    components: {
+      Popup
+    }
   }
 </script>
 
