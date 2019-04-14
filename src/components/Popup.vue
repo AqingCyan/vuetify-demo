@@ -43,7 +43,7 @@ export default {
   methods: {
     sumbit() {
       if(this.$refs.form.validate()) {
-        console.log(this.title, this.content)
+        // console.log(this.title, this.content)
       }
     }
   },
